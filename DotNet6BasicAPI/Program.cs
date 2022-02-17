@@ -64,6 +64,7 @@ builder.Services.AddSwaggerGen();
 
 #region Scoped DI
 builder.Services.AddScoped<StateRepository>();
+builder.Services.AddScoped<MasterClassRepository>();
 #endregion
 
 var app = builder.Build();

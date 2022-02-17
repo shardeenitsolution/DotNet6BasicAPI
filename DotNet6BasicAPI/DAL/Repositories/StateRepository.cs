@@ -1,5 +1,5 @@
 ﻿using DotNet6BasicAPI.DAL.DBModels;
-using DotNet6BasicAPI.Models.DAO;
+using DotNet6BasicAPI.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotNet6BasicAPI.DAL.Repositories
@@ -12,11 +12,10 @@ namespace DotNet6BasicAPI.DAL.Repositories
         {
             _context = context;
         }
-        public async Task<List<StateViewModel>> GetAsync()
+        public IQueryable<StateViewModel> Get()
         {
-            return await _context
-                .States.Select(s => new StateViewModel { Id = s.Id, Name = s.Name })
-                .ToListAsync();
+            return _context
+                .States.Select(s => new StateViewModel { Id = s.Id, Name = s.Name }).AsQueryable();
         }
 
         public async Task<StateViewModel?> GetAsync(int id)

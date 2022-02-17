@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using LIbrary.DTOs;
 
 namespace WebApp.Controllers
 {
@@ -10,6 +11,14 @@ namespace WebApp.Controllers
         }
 
         public IActionResult Create()
+        {
+            return View();
+        }
+        public IActionResult CreateUsingModel()
+        {
+            return View(new AddStateModel());
+        }
+        public IActionResult UsingRepo()
         {
             return View();
         }

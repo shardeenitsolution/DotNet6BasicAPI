@@ -25,4 +25,8 @@
     <Folder Include="DBScripts\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LIbrary.DTOs\LIbrary.DTOs.csproj" />
+  </ItemGroup>
+
 </Project>

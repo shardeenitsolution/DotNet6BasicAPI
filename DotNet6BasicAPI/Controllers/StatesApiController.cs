@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DotNet6BasicAPI.DAL.DBModels;
-using DotNet6BasicAPI.Models.DAO;
+using DotNet6BasicAPI.Models.DTO;
 
 namespace DotNet6BasicAPI.Controllers
 {
@@ -91,39 +91,49 @@ namespace DotNet6BasicAPI.Controllers
         // PUT: api/StatesApi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Put(int id, EditStateViewModel editStateViewModel)
         {
-            if (id != editStateViewModel.Id)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
+                if (id != editStateViewModel.Id)
+                {
+                    return BadRequest();
+                }
 
-            State state = _context.States.Find(id);
-            if (state == null)
-            {
-                return NotFound();
-            }
-
-            state.Name = editStateViewModel.Name;
-            _context.Entry(state).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StateExists(id))
+                State state = _context.States.Find(id);
+                if (state == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                state.Name = editStateViewModel.Name;
+                _context.Entry(state).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!StateExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // POST: api/StatesApi
@@ -131,16 +141,23 @@ namespace DotNet6BasicAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<StateViewModel>> Post(AddStateViewModel addStateViewModel)
         {
-            State state = new State
+            if (ModelState.IsValid)
             {
-                Name = addStateViewModel.Name
-            };
+                State state = new State
+                {
+                    Name = addStateViewModel.Name
+                };
 
-            _context.States.Add(state);
-            await _context.SaveChangesAsync();
+                _context.States.Add(state);
+                await _context.SaveChangesAsync();
 
-            StateViewModel model = new StateViewModel { Id = state.Id, Name = state.Name };
-            return CreatedAtAction("Get", new { id = state.Id }, model);
+                StateViewModel model = new StateViewModel { Id = state.Id, Name = state.Name };
+                return CreatedAtAction("Get", new { id = state.Id }, model);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // DELETE: api/StatesApi/5
