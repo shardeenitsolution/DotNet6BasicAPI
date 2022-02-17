@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet6BasicAPI", "DotNet6BasicAPI\DotNet6BasicAPI.csproj", "{2D29DFE6-8398-4A32-B7C8-B451FE60AE6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{09097E48-D91F-48BF-A509-BC5412CDB747}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp\WebApp.csproj", "{09097E48-D91F-48BF-A509-BC5412CDB747}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LIbrary.DTOs", "LIbrary.DTOs\LIbrary.DTOs.csproj", "{4D755CDB-8A2E-4EDC-88C7-05B78891341F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{09097E48-D91F-48BF-A509-BC5412CDB747}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09097E48-D91F-48BF-A509-BC5412CDB747}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09097E48-D91F-48BF-A509-BC5412CDB747}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D755CDB-8A2E-4EDC-88C7-05B78891341F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D755CDB-8A2E-4EDC-88C7-05B78891341F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D755CDB-8A2E-4EDC-88C7-05B78891341F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D755CDB-8A2E-4EDC-88C7-05B78891341F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

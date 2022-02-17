@@ -1,31 +1,25 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DotNet6BasicAPI.DAL.DBModels;
+using LIbrary.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DotNet6BasicAPI.DAL.DBModels;
-using DotNet6BasicAPI.Models.DTO;
-using DotNet6BasicAPI.DAL.Repositories;
 
 namespace DotNet6BasicAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StatesRepositoryApiController : ControllerBase
+    public class MasterCourseController : ControllerBase
     {
-        private readonly StateRepository _stateRepository;
+        private readonly JWTAuthDBContext _context;
 
-        public StatesRepositoryApiController(StateRepository stateRepository)
+        public MasterCourseController(JWTAuthDBContext context)
         {
-            _stateRepository = stateRepository;
+            _context = context;
         }
 
-        // GET: api/StatesRepositoryApi
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<StateViewModel>>> Get()
+        // GET: api/StatesApi
+        [HttpGet("Search")]
+        public async Task<ActionResult<IEnumerable<MasterCourseModel>>> GetSearch()
         {
             try
             {
@@ -40,9 +34,9 @@ namespace DotNet6BasicAPI.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                List<StateViewModel> data = new();
+                List<MasterCourseModel> data = new();
                 //query
-                var query = _stateRepository.Get();
+                var query = _context.MasterCourses.AsQueryable();
 
                 //Sorting 
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -64,7 +58,7 @@ namespace DotNet6BasicAPI.Controllers
                 //Paging     
                 query = pageSize < 0 ? query : query.Skip(skip).Take(pageSize);
 
-                data = await query.Select(s => new StateViewModel { Id = s.Id, Name = s.Name })
+                data = await query.Select(s => new MasterCourseModel { Id = s.Id, Name = s.Name })
                 .ToListAsync();
                 var jsonData = new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
                 return Ok(jsonData);
@@ -75,37 +69,57 @@ namespace DotNet6BasicAPI.Controllers
             }
         }
 
-        // GET: api/StatesRepositoryApi/5
+        // GET: api/StatesApi/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<StateViewModel>> Get(int id)
+        public async Task<ActionResult<MasterCourseModel>> Get(int id)
         {
-            var state = await _stateRepository.GetAsync(id);
+            var state = await _context.MasterCourses.FindAsync(id);
 
             if (state == null)
             {
                 return NotFound();
             }
 
-            return state;
+            return new MasterCourseModel { Id = state.Id, Name = state.Name };
         }
 
-        // PUT: api/StatesRepositoryApi/5
+        // PUT: api/StatesApi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, EditStateViewModel editStateViewModel)
+        public async Task<IActionResult> Put(int id, EditMasterCourseModel editMasterCourseModel)
         {
             if (ModelState.IsValid)
             {
-                if (id != editStateViewModel.Id)
+                if (id != editMasterCourseModel.Id)
                 {
                     return BadRequest();
                 }
 
-                StateViewModel stateViewModel = await _stateRepository.Update(editStateViewModel);
-                if (stateViewModel == null)
+                var masterCourse = _context.MasterCourses.Find(id);
+                if (masterCourse == null)
                 {
                     return NotFound();
                 }
+
+                masterCourse.Name = editMasterCourseModel.Name;
+                _context.Entry(masterCourse).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MasterCourseExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
                 return NoContent();
             }
             else
@@ -114,15 +128,27 @@ namespace DotNet6BasicAPI.Controllers
             }
         }
 
-        // POST: api/StatesRepositoryApi
+        // POST: api/StatesApi
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<StateViewModel>> Post(AddStateViewModel addStateViewModel)
+        public async Task<ActionResult<MasterCourseModel>> Post(AddMasterCourseModel addMasterCourseModel)
         {
             if (ModelState.IsValid)
             {
-                StateViewModel stateViewModel = await _stateRepository.Add(addStateViewModel);
-                return CreatedAtAction("Get", new { id = stateViewModel.Id }, stateViewModel);
+                MasterCourse masterCourse = new MasterCourse
+                {
+                    Name = addMasterCourseModel.Name,
+                    Code = addMasterCourseModel.Code,
+                    SemesterNumber = addMasterCourseModel.SemesterNumber,
+                    LaunchDate = addMasterCourseModel.LaunchDate,
+                    IsActive = true,
+                };
+
+                _context.MasterCourses.Add(masterCourse);
+                await _context.SaveChangesAsync();
+
+                MasterCourseModel model = new MasterCourseModel { Id = masterCourse.Id, Name = masterCourse.Name };
+                return CreatedAtAction("Get", new { id = masterCourse.Id }, model);
             }
             else
             {
@@ -130,16 +156,25 @@ namespace DotNet6BasicAPI.Controllers
             }
         }
 
-        // DELETE: api/StatesRepositoryApi/5
+        // DELETE: api/StatesApi/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var stateViewModel = await _stateRepository.Delete(id);
-            if (stateViewModel == null)
+            var masterCourse = await _context.MasterCourses.FindAsync(id);
+            if (masterCourse == null)
             {
                 return NotFound();
             }
+
+            _context.MasterCourses.Remove(masterCourse);
+            await _context.SaveChangesAsync();
+
             return NoContent();
+        }
+
+        private bool MasterCourseExists(int id)
+        {
+            return _context.MasterCourses.Any(e => e.Id == id);
         }
     }
 }

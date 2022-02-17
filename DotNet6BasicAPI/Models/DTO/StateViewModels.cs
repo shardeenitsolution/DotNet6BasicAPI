@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DotNet6BasicAPI.Models.DAO
+namespace DotNet6BasicAPI.Models.DTO
 {
     public class StateViewModel
     {
