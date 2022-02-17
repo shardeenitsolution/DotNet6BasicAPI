@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DotNet6BasicAPI.DAL.DBModels
 {
-    public partial class JWTAuthDBContext : DbContext
+    public partial class JWTAuthLocalDBContext : DbContext
     {
-        public JWTAuthDBContext()
+        public JWTAuthLocalDBContext()
         {
         }
 
-        public JWTAuthDBContext(DbContextOptions<JWTAuthDBContext> options)
+        public JWTAuthLocalDBContext(DbContextOptions<JWTAuthLocalDBContext> options)
             : base(options)
         {
         }
@@ -33,19 +33,15 @@ namespace DotNet6BasicAPI.DAL.DBModels
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server=68.71.130.74,1533;database=shardeen_demo_db;user=shardeeen_demo_db_admin;password=l04!z1dI");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Initial Catalog=JWTAuthDB;Integrated Security=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("shardeeen_demo_db_admin");
-
             modelBuilder.Entity<AcademicYear>(entity =>
             {
-                entity.ToTable("AcademicYears", "dbo");
-
-                entity.HasIndex(e => e.Year, "UQ__Academic__D4BD605484936638")
+                entity.HasIndex(e => e.Year, "UQ__Academic__D4BD60549D050B97")
                     .IsUnique();
 
                 entity.Property(e => e.Year)
@@ -55,8 +51,6 @@ namespace DotNet6BasicAPI.DAL.DBModels
 
             modelBuilder.Entity<AspNetRole>(entity =>
             {
-                entity.ToTable("AspNetRoles", "dbo");
-
                 entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
                     .IsUnique()
                     .HasFilter("([NormalizedName] IS NOT NULL)");
@@ -68,8 +62,6 @@ namespace DotNet6BasicAPI.DAL.DBModels
 
             modelBuilder.Entity<AspNetRoleClaim>(entity =>
             {
-                entity.ToTable("AspNetRoleClaims", "dbo");
-
                 entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
 
                 entity.HasOne(d => d.Role)
@@ -79,8 +71,6 @@ namespace DotNet6BasicAPI.DAL.DBModels
 
             modelBuilder.Entity<AspNetUser>(entity =>
             {
-                entity.ToTable("AspNetUsers", "dbo");
-
                 entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
 
                 entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
@@ -105,7 +95,7 @@ namespace DotNet6BasicAPI.DAL.DBModels
                         {
                             j.HasKey("UserId", "RoleId");
 
-                            j.ToTable("AspNetUserRoles", "dbo");
+                            j.ToTable("AspNetUserRoles");
 
                             j.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId");
                         });
@@ -113,8 +103,6 @@ namespace DotNet6BasicAPI.DAL.DBModels
 
             modelBuilder.Entity<AspNetUserClaim>(entity =>
             {
-                entity.ToTable("AspNetUserClaims", "dbo");
-
                 entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
 
                 entity.HasOne(d => d.User)
@@ -125,8 +113,6 @@ namespace DotNet6BasicAPI.DAL.DBModels
             modelBuilder.Entity<AspNetUserLogin>(entity =>
             {
                 entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
-
-                entity.ToTable("AspNetUserLogins", "dbo");
 
                 entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
 
@@ -139,8 +125,6 @@ namespace DotNet6BasicAPI.DAL.DBModels
             {
                 entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
 
-                entity.ToTable("AspNetUserTokens", "dbo");
-
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.AspNetUserTokens)
                     .HasForeignKey(d => d.UserId);
@@ -148,9 +132,7 @@ namespace DotNet6BasicAPI.DAL.DBModels
 
             modelBuilder.Entity<MasterClass>(entity =>
             {
-                entity.ToTable("MasterClasses", "dbo");
-
-                entity.HasIndex(e => e.Name, "UQ__MasterCl__737584F63789D406")
+                entity.HasIndex(e => e.Name, "UQ__MasterCl__737584F629A752CC")
                     .IsUnique();
 
                 entity.Property(e => e.IsActive)
@@ -169,23 +151,21 @@ namespace DotNet6BasicAPI.DAL.DBModels
                     .WithMany(p => p.MasterClasses)
                     .HasForeignKey(d => d.MasterCourseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MasterCla__Maste__114A936A");
+                    .HasConstraintName("FK__MasterCla__Maste__60A75C0F");
 
                 entity.HasOne(d => d.ModifiedByNavigation)
                     .WithMany(p => p.MasterClasses)
                     .HasForeignKey(d => d.ModifiedBy)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MasterCla__Modif__123EB7A3");
+                    .HasConstraintName("FK__MasterCla__Modif__628FA481");
             });
 
             modelBuilder.Entity<MasterCourse>(entity =>
             {
-                entity.ToTable("MasterCourses", "dbo");
-
-                entity.HasIndex(e => e.Name, "UQ__MasterCo__737584F6C23F9B64")
+                entity.HasIndex(e => e.Name, "UQ__MasterCo__737584F605A191B6")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Code, "UQ__MasterCo__A25C5AA7BE9F721E")
+                entity.HasIndex(e => e.Code, "UQ__MasterCo__A25C5AA7F4F99F5B")
                     .IsUnique();
 
                 entity.Property(e => e.Code)
@@ -210,14 +190,12 @@ namespace DotNet6BasicAPI.DAL.DBModels
                     .WithMany(p => p.MasterCourses)
                     .HasForeignKey(d => d.ModifiedBy)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MasterCou__Modif__1332DBDC");
+                    .HasConstraintName("FK__MasterCou__Modif__5CD6CB2B");
             });
 
             modelBuilder.Entity<State>(entity =>
             {
-                entity.ToTable("States", "dbo");
-
-                entity.HasIndex(e => e.Name, "UQ__States__737584F6F063C78F")
+                entity.HasIndex(e => e.Name, "UQ__States__737584F65B382DE7")
                     .IsUnique();
 
                 entity.Property(e => e.Name)
@@ -227,12 +205,10 @@ namespace DotNet6BasicAPI.DAL.DBModels
 
             modelBuilder.Entity<Subject>(entity =>
             {
-                entity.ToTable("Subjects", "dbo");
-
-                entity.HasIndex(e => e.Name, "UQ__Subjects__737584F6473F8FCC")
+                entity.HasIndex(e => e.Name, "UQ__Subjects__737584F6F5609D58")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Code, "UQ__Subjects__A25C5AA7AE4223F6")
+                entity.HasIndex(e => e.Code, "UQ__Subjects__A25C5AA7A4766202")
                     .IsUnique();
 
                 entity.Property(e => e.Code)
