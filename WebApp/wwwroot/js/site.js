@@ -3,3 +3,18 @@
 
 // Write your JavaScript code.
 const apiUrl = 'https://localhost:7261/api';
+
+function createState() {
+    $.ajax({
+        url: apiUrl+`/StatesRepositoryApi`,
+        method: 'POST',
+    }).done(function (data) {
+        if (callback)
+            alert("Success");
+        else {
+            return data;
+        }
+    }).fail(function (data) {
+        alert('Error : (' + data.responseJSON.message + '). Please try later.');
+    });
+}
