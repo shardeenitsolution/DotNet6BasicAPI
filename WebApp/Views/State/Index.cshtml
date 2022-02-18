@@ -4,13 +4,13 @@
 }
 
 <div class="head d-flex">
-    <div class="col-9">
+    <div class="col-10">
         <h1>Get Table details</h1>
     </div>
 
-    <a class="nav-link text-dark d-grid gap-2 col-3 mx-auto" asp-controller="State" asp-action="Create">
-        <button class="btn btn-primary fw-bold pe-auto" type="button">
-                Add Data
+    <a class="" asp-controller="State" asp-action="Create">
+        <button class="btn mt-4 btn-primary btn-sm fw-bold ">
+                Add State
         </button>
     </a>
 </div>
@@ -65,8 +65,8 @@
                     "className": "text-center",
                     "render": function (data, type, row) {
                         return `<input type="hidden" class="" value="${row.id}" />
-                        <a class="text-warning btn-actionbtn btn btn-sm" href="/state/edit?id=${row.id}" title="Edit"> <span class="fa fa-edit "></span>Edit </a>
-                          <a class="text-danger btn-actionbtn btn btn-sm" onClick="onDelete(${row.id})" title="Remove"><span class="fa fa-trash "></span> Delete </a>`;
+                        <a class="bg-secondary btn btn-sm text-white cursor-pointer" href="/state/edit?id=${row.id}" title="Edit"> <span class="fa fa-edit "></span>Edit </a>
+                          <a class="bg-danger btn btn-sm text-white cursor-pointer" onClick="onDelete(${row.id})" title="Remove"><span class="fa fa-trash "></span> Delete </a>`;
                     }
                 },
             ]
