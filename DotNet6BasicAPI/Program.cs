@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "Allow",
                       builder =>
                       {
-                          builder.AllowAnyOrigin();
+                          builder.AllowAnyOrigin().AllowAnyHeader();
                           //builder.WithOrigins("http://example.com",
                           //                    "http://www.contoso.com");
                       });
@@ -77,7 +77,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(c => c.AllowAnyOrigin());
+app.UseCors(c => c.AllowAnyOrigin().AllowAnyHeader());
 app.UseAuthentication();
 app.UseAuthorization();
 
