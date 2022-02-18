@@ -4,10 +4,14 @@
 // Write your JavaScript code.
 const apiUrl = 'https://localhost:7261/api';
 
-function createState() {
+function createState(form) {
     $.ajax({
-        url: apiUrl+`/StatesRepositoryApi`,
+        url: apiUrl + `/StatesApi?name=asdsf`,
         method: 'POST',
+        //data: JSON.stringify({ name: 'jayesh' }),
+        data: "{ name='jayesh' }",
+        contentType: 'application/json',
+
     }).done(function (data) {
         if (callback)
             alert("Success");
