@@ -53,8 +53,9 @@
                 {
                     "className": "text-center",
                     "render": function (data, type, row) {
-                        return '<a class="text-warning btn-actionbtn" title="Edit"> <span class="fa fa-pencil-square-o"></span> </a>' +
-                            '<a class="text-danger btn-actionbtn"  title="Remove"> <span class="fa fa-trash"></span> </a>';
+                        return `<input type="hidden" class="" value="${row.id}" />
+                        <a class="text-warning btn-actionbtn btn btn-sm" href="/state/edit?id=${row.id}" title="Edit"> <span class="fa fa-edit "></span>Edit </a>
+                          <a class="text-danger btn-actionbtn btn btn-sm" onClick="onDelete(${row.id})" title="Remove"><span class="fa fa-trash "></span> Delete </a>`;
                     }
                 },
             ]

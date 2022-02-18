@@ -4,6 +4,18 @@
 // Write your JavaScript code.
 const apiUrl = 'https://localhost:7261/api';
 
+function getUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+
 function postForm(form,appendUrl) {
    
     const formData = new FormData(form)
@@ -22,6 +34,40 @@ function postForm(form,appendUrl) {
         alert('Error : (' + data.responseJSON.message + '). Please try later.');
     });
 }
+
+
+function onPut(obj, passUrl) {
+    const formData = new FormData(obj)
+    $.ajax({
+        url: apiUrl +'/StatesApi/'+ passUrl,
+        method: 'PUT',
+        data: JSON.stringify(Object.fromEntries(formData)),
+        contentType: 'application/json',
+
+    }).done(function (data) {
+        alert("Success");
+        return data;
+
+    }).fail(function (data) {
+        alert('Error : (' + data.responseJSON.message + '). Please try later.');
+    });
+
+}
+
+function onDelete(passUrl) {
+    $.ajax({
+        url: apiUrl + '/StatesApi/' + passUrl,
+        method: 'DELETE',
+    }).done(function (data) {
+        alert("Success");
+        return data;
+
+    }).fail(function (data) {
+        alert('Error : (' + data.responseJSON.message + '). Please try later.');
+    });
+
+}
+
 
 
     //    fetch(url, {
