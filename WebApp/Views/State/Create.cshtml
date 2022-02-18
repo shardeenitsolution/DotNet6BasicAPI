@@ -10,14 +10,14 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form onSubmit='createState(this);return false;'>            
+        <form onsubmit='postForm(this,`/StatesApi`);return false;'>            
             <div class="form-group">
                 <label for="Name" class="control-label"></label>
-                <input class="form-control" type="text" data-val="true" data-val-required="The Name field is required." id="Name" name="Name" value="">
-                <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                <input class="form-control" type="text" data-val="true" data-val-required="The Name field is required." id="Name" name="name" value="">
+                <span class="text-danger field-validation-valid" data-valmsg-for="name" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" id='SubmitBtn' value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
