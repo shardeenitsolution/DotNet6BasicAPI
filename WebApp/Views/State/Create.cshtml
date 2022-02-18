@@ -4,24 +4,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create Wihtout Using Model</h1>
+<div class="d-flex flex-column align-items-center">
+    <h1>Create Wihtout Using Model</h1>
 
-<h4>AddStateModel</h4>
+    <h4>AddStateModel</h4>
+</div>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
+
+<div class="row d-flex justify-content-center">
+    <div class="col-md-4 pt-4">
         <form onsubmit='postForm(this,`/StatesApi`);return false;'>            
-            <div class="form-group">
-                <label for="Name" class="control-label"></label>
-                <input class="form-control" type="text" data-val="true" data-val-required="The Name field is required." id="Name" name="name" value="">
-                <span class="text-danger field-validation-valid" data-valmsg-for="name" data-valmsg-replace="true"></span>
+            <div class="form-group mb-3 d-flex flex-column">
+                <label for="Name" class="control-label"> State: </label>
+                <input class="form-control bg-light" type="text" data-val="true" data-val-required="The Name field is required." id="Name" name="name" value="">
             </div>
-            <div class="form-group">
-                <input type="submit" id='SubmitBtn' value="Create" class="btn btn-primary" />
+            <div class="form-group d-flex justify-content-center">
+                <input type="submit" id='SubmitBtn' value="Create" class="btn btn-primary px-3" />
             </div>
         </form>
     </div>
 </div>
+
 
 
 @section Scripts {
