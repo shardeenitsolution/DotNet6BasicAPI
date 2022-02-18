@@ -26,5 +26,20 @@ namespace WebApp.Controllers
         {
             return View();
         }
+
+        public IActionResult ForStateGet()
+        {
+            return View();
+        }
+
+        public IActionResult ForStatePut()
+        {
+            return View();
+        }
+
+        public IActionResult ForStatePost()
+        {
+            return View();
+        }
     }
 }

@@ -3,12 +3,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Get Table details</h1>
+<div class="head d-flex">
+    <div class="col-9">
+        <h1>Get Table details</h1>
+    </div>
+
+    <a class="nav-link text-dark d-grid gap-2 col-3 mx-auto" asp-controller="State" asp-action="Create">
+        <button class="btn btn-primary fw-bold pe-auto" type="button">
+                Add Data
+        </button>
+    </a>
+</div>
 
 <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
 <div class="container">
     <br />
+
     <div style="width:90%; margin:0 auto;">
         <table id="statesDatatable" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
             <thead class="bg-info">
