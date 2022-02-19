@@ -4,29 +4,25 @@
 // Write your JavaScript code.
 const apiUrl = 'https://localhost:7261/api';
 
-function getUrlVars() {
-    var vars = [], hash;
-    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for (var i = 0; i < hashes.length; i++) {
-        hash = hashes[i].split('=');
-        vars.push(hash[0]);
-        vars[hash[0]] = hash[1];
-    }
-    return vars;
-}
 
+function postForm(form, passUrl) {
 
-function postForm(form,appendUrl) {
-   
     const formData = new FormData(form)
+    var token;
 
     $.ajax({
-        url: apiUrl + appendUrl,
+        url: apiUrl + passUrl,
         method: 'POST',
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
 
     }).done(function (data) {
+        if (window.location.pathname == '/Authenticate/Login') {
+            if (checkCookie()) {
+                alert("valid token")
+            }
+            setCookie(`${$("#username").val()}_token`, data.token, data.expiration);
+        }
         alert("Success");
         return data;
 
@@ -39,13 +35,14 @@ function postForm(form,appendUrl) {
 function onPut(obj, passUrl) {
     const formData = new FormData(obj)
     $.ajax({
-        url: apiUrl +'/StatesApi/'+ passUrl,
+        url: apiUrl + '/StatesApi/' + passUrl,
         method: 'PUT',
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
 
     }).done(function (data) {
         alert("Success");
+
         return data;
 
     }).fail(function (data) {
@@ -68,6 +65,38 @@ function onDelete(passUrl) {
 
 }
 
+function setCookie(cname, cvalue, exdays) {
+   /* const d = new Date();*/
+    //d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    //let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + exdays + ";path=/";
+}
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            console.log(c.substring(name.length, c.length))
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkCookie() {
+    let user = getCookie(`${$("#username").val()}_token`);
+    if (user != "") {
+        alert("Welcome again " + $("#username").val());
+    } else {
+        alert("Invalid Token");
+    }
+}
 
 
     //    fetch(url, {
