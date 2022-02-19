@@ -32,14 +32,14 @@ namespace WebApp.Controllers
             return View();
         }
 
-        public IActionResult ForStatePut()
-        {
-            return View();
-        }
+        //public IActionResult EditUsingModel()
+        //{
+        //    return View(new EditStateModel());
+        //}
 
-        public IActionResult ForStatePost()
-        {
-            return View();
-        }
+        //public IActionResult CreateUsingModel()
+        //{
+        //    return View();
+        //}
     }
 }
