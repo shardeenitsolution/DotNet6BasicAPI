@@ -22,6 +22,10 @@ namespace WebApp.Controllers
         {
             return View(new AddStateModel());
         }
+        public IActionResult CreateUsingModelAndjQueryUnobtrusiveAJAX()
+        {
+            return View(new AddStateModel());
+        }
         public IActionResult UsingRepo()
         {
             return View();
