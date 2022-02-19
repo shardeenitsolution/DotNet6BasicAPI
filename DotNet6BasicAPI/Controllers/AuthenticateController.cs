@@ -37,10 +37,12 @@ namespace DotNet6BasicAPI.Controllers
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
+                var userClaims = await _userManager.GetClaimsAsync(user);
 
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 

@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using LIbrary.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using DotNet6BasicAPI.BAL.Constants;
 
 namespace DotNet6BasicAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = UserRoles.Admin)]
     public class MasterClassController : ControllerBase
     {
         private readonly MasterClassRepository _masterClassRepository;

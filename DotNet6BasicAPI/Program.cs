@@ -4,6 +4,7 @@ using DotNet6BasicAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -62,9 +63,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-#region Scoped DI
+#region Scoped Services to DI
 builder.Services.AddScoped<StateRepository>();
 builder.Services.AddScoped<MasterClassRepository>();
+#endregion
+
+#region Singleton Services to DI
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 #endregion
 
 var app = builder.Build();
