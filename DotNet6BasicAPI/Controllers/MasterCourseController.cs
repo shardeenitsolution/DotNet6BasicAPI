@@ -1,13 +1,16 @@
 ﻿using DotNet6BasicAPI.DAL.DBModels;
 using LIbrary.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace DotNet6BasicAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MasterCourseController : ControllerBase
     {
         private readonly JWTAuthDBContext _context;
@@ -88,6 +91,7 @@ namespace DotNet6BasicAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, EditMasterCourseModel editMasterCourseModel)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (ModelState.IsValid)
             {
                 if (id != editMasterCourseModel.Id)
@@ -102,6 +106,11 @@ namespace DotNet6BasicAPI.Controllers
                 }
 
                 masterCourse.Name = editMasterCourseModel.Name;
+                masterCourse.Code = editMasterCourseModel.Code;
+                masterCourse.LaunchDate = editMasterCourseModel.LaunchDate;
+                masterCourse.SemesterNumber = editMasterCourseModel.SemesterNumber;
+                masterCourse.ModifiedOn = DateTime.UtcNow;
+                masterCourse.ModifiedBy = userId;
                 _context.Entry(masterCourse).State = EntityState.Modified;
 
                 try
@@ -135,19 +144,30 @@ namespace DotNet6BasicAPI.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 MasterCourse masterCourse = new MasterCourse
                 {
                     Name = addMasterCourseModel.Name,
                     Code = addMasterCourseModel.Code,
                     SemesterNumber = addMasterCourseModel.SemesterNumber,
                     LaunchDate = addMasterCourseModel.LaunchDate,
-                    IsActive = true,
+                    ModifiedOn = DateTime.UtcNow,
+                    ModifiedBy = userId,
+                    IsActive = true
                 };
 
                 _context.MasterCourses.Add(masterCourse);
                 await _context.SaveChangesAsync();
 
-                MasterCourseModel model = new MasterCourseModel { Id = masterCourse.Id, Name = masterCourse.Name };
+                MasterCourseModel model = new MasterCourseModel
+                {
+                    Id = masterCourse.Id,
+                    Name = masterCourse.Name,
+                    Code=masterCourse.Code,
+                    IsActive = masterCourse.IsActive,
+                    LaunchDate=masterCourse.LaunchDate,
+                    SemesterNumber=masterCourse.SemesterNumber,
+                };
                 return CreatedAtAction("Get", new { id = masterCourse.Id }, model);
             }
             else
