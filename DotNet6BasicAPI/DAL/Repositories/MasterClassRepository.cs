@@ -2,16 +2,19 @@
 using DotNet6BasicAPI.Models.DTO;
 using LIbrary.DTOs;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace DotNet6BasicAPI.DAL.Repositories
 {
     public class MasterClassRepository
     {
         private readonly JWTAuthDBContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MasterClassRepository(JWTAuthDBContext context)
+        public MasterClassRepository(JWTAuthDBContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<List<MasterClassModel>> GetAsync()
         {
@@ -43,6 +46,8 @@ namespace DotNet6BasicAPI.DAL.Repositories
 
         public async Task<MasterClassModel?> Update(EditMasterClassModel editMasterClassModel)
         {
+            var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var masterClass = _context.MasterClasses.Find(editMasterClassModel.Id);
             if (masterClass == null)
             {
@@ -51,6 +56,9 @@ namespace DotNet6BasicAPI.DAL.Repositories
 
             masterClass.Name = editMasterClassModel.Name;
             masterClass.MasterCourseId = editMasterClassModel.MasterCourseId;
+            masterClass.ModifiedBy = userId;
+            masterClass.ModifiedOn = DateTime.UtcNow;
+
             _context.Entry(masterClass).State = EntityState.Modified;
 
             try
@@ -73,11 +81,15 @@ namespace DotNet6BasicAPI.DAL.Repositories
 
         public async Task<MasterClassModel> Add(AddMasterClassModel addMasterClassModel)
         {
+            var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
             MasterClass masterClass = new MasterClass
             {
                 Name = addMasterClassModel.Name,
                 MasterCourseId = addMasterClassModel.MasterCourseId,
                 IsActive = true,
+                ModifiedOn = DateTime.UtcNow,
+                ModifiedBy = userId
             };
 
             _context.MasterClasses.Add(masterClass);
