@@ -36,6 +36,12 @@ namespace DotNet6BasicAPI.Controllers
             return Ok(jsonData);
         }
 
+        [HttpGet("GetList")]
+        public async Task<ActionResult<IEnumerable<MasterClassModel>>> GetList()
+        {
+            return await _masterClassRepository.GetAsync();
+        }
+
         // GET: api/MasterClass/5
         [HttpGet("{id}")]
         public async Task<ActionResult<MasterClassModel>> Get(int id)

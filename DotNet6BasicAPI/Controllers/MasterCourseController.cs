@@ -72,6 +72,12 @@ namespace DotNet6BasicAPI.Controllers
             }
         }
 
+        [HttpGet("GetList")]
+        public async Task<ActionResult<IEnumerable<MasterCourseModel>>> GetList()
+        {
+            return await _context.MasterCourses.Select(s => new MasterCourseModel { Id = s.Id, Name = s.Name }).ToListAsync();
+        }
+
         // GET: api/StatesApi/5
         [HttpGet("{id}")]
         public async Task<ActionResult<MasterCourseModel>> Get(int id)
@@ -163,10 +169,10 @@ namespace DotNet6BasicAPI.Controllers
                 {
                     Id = masterCourse.Id,
                     Name = masterCourse.Name,
-                    Code=masterCourse.Code,
+                    Code = masterCourse.Code,
                     IsActive = masterCourse.IsActive,
-                    LaunchDate=masterCourse.LaunchDate,
-                    SemesterNumber=masterCourse.SemesterNumber,
+                    LaunchDate = masterCourse.LaunchDate,
+                    SemesterNumber = masterCourse.SemesterNumber,
                 };
                 return CreatedAtAction("Get", new { id = masterCourse.Id }, model);
             }
