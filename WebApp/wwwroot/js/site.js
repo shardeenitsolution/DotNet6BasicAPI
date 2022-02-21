@@ -45,7 +45,7 @@ function authPostForm(form, passUrl) {
         return data;
 
     }).fail(function (data) {
-        alert('Error : (' + data.responseJSON.message + '). Please try later.');
+        alert('Error : (' + data.responseText + '). Please try later.');
     });
 }
 
