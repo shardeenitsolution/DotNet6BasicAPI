@@ -23,7 +23,17 @@ namespace DotNet6BasicAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MasterClassModel>>> Get()
         {
-            return await _masterClassRepository.GetAsync();
+            var draw = Request.Query["draw"].FirstOrDefault();
+            var start = Request.Query["start"].FirstOrDefault();
+            var length = Request.Query["length"].FirstOrDefault();
+            var sortColumn = Request.Query["columns[" + Request.Query["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+            var sortColumnDirection = Request.Query["order[0][dir]"].FirstOrDefault();
+            var searchValue = Request.Query["search[value]"].FirstOrDefault();
+
+
+            var data = await _masterClassRepository.GetAsync();
+            var jsonData = new { draw = draw, recordsFiltered = data.Count, recordsTotal = data.Count, data = data };
+            return Ok(jsonData);
         }
 
         // GET: api/MasterClass/5
