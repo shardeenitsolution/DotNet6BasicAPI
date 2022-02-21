@@ -7,10 +7,7 @@ const apiUrl = 'https://localhost:7261/api';
 access_token = getCookie("token");
 
 function postForm(form, passUrl) {
-    
-
     const formData = new FormData(form)
-
     $.ajax({
         url: apiUrl + passUrl,
         method: 'POST',
@@ -19,9 +16,8 @@ function postForm(form, passUrl) {
 
     }).done(function (data) {
         if (window.location.pathname == '/Authenticate/Login') {
-           
             setCookie("token", data.token, data.expiration);
-                   }
+        }
         alert("Success");
         return data;
 
@@ -35,7 +31,7 @@ function authPostForm(form, passUrl) {
     $.ajax({
         url: apiUrl + passUrl,
         beforeSend: function (jqXHR) {
-            jqXHR.setRequestHeader("Authorization", "Basic "+access_token);
+            jqXHR.setRequestHeader("Authorization", "Bearer " + access_token);
         },
         method: 'POST',
         data: JSON.stringify(Object.fromEntries(formData)),
@@ -118,7 +114,6 @@ function checkCookie() {
         alert("Invalid Token");
     }
 }
-
 
     //    fetch(url, {
     //        method: "POST",

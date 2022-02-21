@@ -4,7 +4,10 @@ namespace WebApp.Controllers
 {
     public class AuthenticateController : Controller
     {
-        public IActionResult Register()
+        public IActionResult AdminRegister()
+        {
+            return View();
+        }  public IActionResult Register()
         {
             return View();
         }

@@ -7,7 +7,7 @@
 
     <div class="head d-flex">
         <div class="col-10">
-            <h1>Get Master Class details</h1>
+            <h1>Get Master Course details</h1>
         </div>
 
         <a class="" asp-controller="MasterCourse" asp-action="ForMasterCoursePost">
@@ -53,6 +53,9 @@
             "ajax": {
                 "url": `${apiUrl}/MasterCourse/search`,//https://localhost:7261/api/StatesApi
                 "type": "get",
+                 "beforeSend": function (jqXHR) {
+            jqXHR.setRequestHeader("Authorization", "Bearer " + access_token);
+        },
                 //"datatype": "json",
                 //"content-type":"json"
             },

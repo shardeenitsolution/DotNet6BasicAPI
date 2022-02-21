@@ -1,0 +1,38 @@
+﻿
+
+<div class="row justify-content-center bg-light">
+    <div class="col-5  p-4 bg-white shadow-lg text-center rounded-3">
+
+        <h3>Register</h3>
+
+        <hr />
+        <div class="row text-start mt-4">
+            <div class="col-md-10">
+                <form onsubmit='postForm(this,`/Authenticate/register-admin`);return false;'>
+                    <input id="Id" type="hidden" value="" class="form-control" />
+
+                    <div class="form-group my-3">
+                        <label for="username" class="control-label">User Name</label>
+                        <input type="text" id="username" name="username" class="form-control" />
+                        
+                    </div>
+                    <div class="form-group my-3">
+                        <label for="email" class="control-label">E-Mail</label>
+                        <input type="email" id="email" name="email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" />
+                    </div>
+                    <div class="form-group my-5 ">
+                        @*<a class="btn btn-primary" asp-action="Index">Back to List</a>*@
+                        <input type="submit" value="Register" class="btn btn-primary mx-4" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+        </div>
+    </div>
+</div>
