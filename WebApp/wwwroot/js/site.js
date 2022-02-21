@@ -38,9 +38,6 @@ function authPostForm(form, passUrl) {
         contentType: 'application/json',
 
     }).done(function (data) {
-        if (window.location.pathname == '/Authenticate/Login') {
-            setCookie(`${$("#username").val()}_token`, data.token, data.expiration);
-        }
         alert("Success");
         return data;
 
@@ -53,6 +50,27 @@ function onPut(obj, passUrl) {
     const formData = new FormData(obj)
     $.ajax({
         url: apiUrl + '/StatesApi/' + passUrl,
+        method: 'PUT',
+        data: JSON.stringify(Object.fromEntries(formData)),
+        contentType: 'application/json',
+
+    }).done(function (data) {
+        alert("Success");
+
+        return data;
+
+    }).fail(function (data) {
+        alert('Error : (' + data.responseJSON.message + '). Please try later.');
+    });
+
+}
+function onAuthPut(obj, passUrl) {
+    const formData = new FormData(obj)
+    $.ajax({
+        url: apiUrl + passUrl,
+        beforeSend: function (jqXHR) {
+            jqXHR.setRequestHeader("Authorization", "Bearer " + access_token);
+        },
         method: 'PUT',
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
