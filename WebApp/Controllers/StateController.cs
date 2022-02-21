@@ -36,10 +36,10 @@ namespace WebApp.Controllers
             return View();
         }
 
-        //public IActionResult EditUsingModel()
-        //{
-        //    return View(new EditStateModel());
-        //}
+        public IActionResult EditUsingModel()
+        {
+            return View(new EditStateModel());
+        }
 
         //public IActionResult CreateUsingModel()
         //{

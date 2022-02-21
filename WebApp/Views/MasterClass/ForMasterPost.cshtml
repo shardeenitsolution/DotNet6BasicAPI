@@ -7,24 +7,24 @@
 <div b-7882z672yd="" class="container d-flex justify-content-center">
     <main b-7882z672yd="" role="main" class="p-4 shadow border border-3 rounded-3 bg-white">
 
-         <div class="d-flex flex-column align-items-center">
+        <div class="d-flex flex-column align-items-center">
             <h1>Create Wihtout Using Model</h1>
 
             <h4>AddStateModel</h4>
 
             <hr class="w-100">
         </div>
-       
+
 
         <div class="row d-flex justify-content-center">
             <div class="pt-4">
-                <form onsubmit='authPostForm(this,`/MasterClass`);return false;'>                    
-                   <div class="form-group mb-3 d-flex flex-column">
+                <form onsubmit='authPostForm(this,`/MasterClass`);return false;'>
+                    <div class="form-group mb-3 d-flex flex-column">
 
-                       <label for="masterId" class="control-label"> Master Course Id: </label>
-                       <select class="form-control">
-                           <option selected>Select Course</option>
-                       </select>
+                        <label for="masterCourseId" class="control-label"> Master Course Id: </label>
+                        <select class="form-control" id="masterCourseId" name="masterCourseId">
+                            <option selected>Select Course</option>
+                        </select>
                         @*<input class="form-control shadow-sm" type="number" id="masterCourseId" name="masterCourseId">*@
                     </div>
 
@@ -48,7 +48,25 @@
 
 <script>
         $(document).ready(function () {
-            
+    $.ajax({
+        url: `${apiUrl}/MasterCourse/GetList`,
+        method: 'GET',
+        beforeSend: function (jqXHR) {
+            jqXHR.setRequestHeader("Authorization", "Bearer " + access_token);
+        },
+        
+    contentType: 'application/json',
+
+    }).done(function (data) {
+          $.each(data, function (key, value) {
+        $("#masterCourseId").append($("<option></option>").val(value.id).html(value.name));
+          })
+        return data;
+
+    }).fail(function (data) {
+        alert('Error : (' + data.responseText + '). Please try later.');
+    });
+
     });
 </script>
 }
