@@ -4,11 +4,12 @@
 // Write your JavaScript code.
 const apiUrl = 'https://localhost:7261/api';
 
+access_token = getCookie("token");
 
 function postForm(form, passUrl) {
+    
 
     const formData = new FormData(form)
-    var token;
 
     $.ajax({
         url: apiUrl + passUrl,
@@ -18,9 +19,30 @@ function postForm(form, passUrl) {
 
     }).done(function (data) {
         if (window.location.pathname == '/Authenticate/Login') {
-            if (checkCookie()) {
-                alert("valid token")
-            }
+           
+            setCookie("token", data.token, data.expiration);
+                   }
+        alert("Success");
+        return data;
+
+    }).fail(function (data) {
+        alert('Error : (' + data.responseJSON.message + '). Please try later.');
+    });
+}
+
+function authPostForm(form, passUrl) {
+    const formData = new FormData(form)
+    $.ajax({
+        url: apiUrl + passUrl,
+        beforeSend: function (jqXHR) {
+            jqXHR.setRequestHeader("Authorization", "Basic "+access_token);
+        },
+        method: 'POST',
+        data: JSON.stringify(Object.fromEntries(formData)),
+        contentType: 'application/json',
+
+    }).done(function (data) {
+        if (window.location.pathname == '/Authenticate/Login') {
             setCookie(`${$("#username").val()}_token`, data.token, data.expiration);
         }
         alert("Success");
@@ -30,7 +52,6 @@ function postForm(form, passUrl) {
         alert('Error : (' + data.responseJSON.message + '). Please try later.');
     });
 }
-
 
 function onPut(obj, passUrl) {
     const formData = new FormData(obj)
@@ -66,10 +87,10 @@ function onDelete(passUrl) {
 }
 
 function setCookie(cname, cvalue, exdays) {
-   /* const d = new Date();*/
+    const d = new Date(exdays);
     //d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    //let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + exdays + ";path=/";
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
 function getCookie(cname) {
