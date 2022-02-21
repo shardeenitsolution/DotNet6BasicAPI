@@ -20,8 +20,12 @@
             <div class="pt-4">
                 <form onsubmit='authPostForm(this,`/MasterClass`);return false;'>                    
                    <div class="form-group mb-3 d-flex flex-column">
-                        <label for="masterId" class="control-label"> Master Course Id: </label>
-                        <input class="form-control shadow-sm" type="number" id="masterId" name="masterId">
+
+                       <label for="masterId" class="control-label"> Master Course Id: </label>
+                       <select class="form-control">
+                           <option selected>Select Course</option>
+                       </select>
+                        @*<input class="form-control shadow-sm" type="number" id="masterCourseId" name="masterCourseId">*@
                     </div>
 
                     <div class="form-group mb-3 d-flex flex-column">
