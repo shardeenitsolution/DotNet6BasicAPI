@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+
+<div b-7882z672yd="" class="container d-flex justify-content-center">
+    <main b-7882z672yd="" role="main" class="p-4 shadow border border-3 rounded-3 bg-white">
+
+        <div class="d-flex flex-column align-items-center">
+            <h3>Edit Class Wihtout Using Model</h3>
+
+            @*<h4>AddStateModel</h4>*@
+
+            <hr class="w-100">
+        </div>
+
+
+        <div class="row d-flex justify-content-center">
+            <div class="pt-4">
+                <form>
+                    <div class="form-group mb-3 d-none flex-column">
+                        <input class="form-control shadow-sm" type="hidden" id="Id" name="Id">
+                    </div>
+
+                    <div class="form-group mb-3 d-flex flex-column">
+                        <label for="masterCourseId" class="control-label"> Master Course Id: </label>
+                        <select class="form-control" id="masterCourseId" name="masterCourseId">
+                            <option selected>Select Course</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3 d-flex flex-column">
+                        <label for="Name" class="control-label"> Name: </label>
+                        <input class="form-control shadow-sm" type="text" id="Name" name="name">
+                    </div>
+
+                    @*<div class="form-group d-flex justify-content-center">
+                        <input type="submit" id="SubmitBtn" value="Save" class="btn btn-success px-3">
+                    </div>*@
+                     <div class="form-group my-5 ">
+                        <a class="btn btn-primary" asp-action="MasterClassList">Back to List</a>
+                        <input type="submit" value="Save" class="btn btn-success mx-4" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+
+
+@section Scripts {
+
+
+
+<script>
+       $(document).ready(function(){
+           const params = new Proxy(new URLSearchParams(window.location.search), {
+               get: (searchParams, prop) => searchParams.get(prop)});
+
+       var id = params.id; // "some_value"
+       $('#Id').val(id);
+       console.log(id);
+
+        $('form').on('submit',function(e){
+           e.preventDefault();
+          onAuthPut(this,"/MasterClass/",id);
+       })
+
+       // Ajax call for master course dropdown
+       $.ajax({
+           url: `${apiUrl}/MasterCourse/GetList`,
+           method: 'GET',
+           beforeSend: function (jqXHR) {
+               jqXHR.setRequestHeader("Authorization", "Bearer " + access_token);
+           },
+
+       contentType: 'application/json',
+
+       }).done(function (data) {
+             $.each(data, function (key, value) {
+           $("#masterCourseId").append($("<option></option>").val(value.id).html(value.name));
+             })
+           return data;
+
+       }).fail(function (data) {
+           alert('Error : (' + data.responseText + '). Please try later.');
+       });
+    })
+
+</script>
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

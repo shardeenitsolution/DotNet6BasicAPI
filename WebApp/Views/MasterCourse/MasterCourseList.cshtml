@@ -9,12 +9,11 @@
         <div class="col-10">
             <h1>Get Master Course details</h1>
         </div>
-
-        <a class="" asp-controller="MasterCourse" asp-action="ForMasterCoursePost">
-            <button class="btn mt-4 btn-primary btn-sm fw-bold ">
+          <a class="" asp-controller="MasterCourse" asp-action="CreateMasterCourse">
+            <button class="btn mt-4 btn-primary btn-sm fw-bold " >
                 Add Master Course
             </button>
-        </a>
+            </a>
     </div>
 
     <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
@@ -71,8 +70,8 @@
                     "className": "text-center",
                     "render": function (data, type, row) {
                         return `<input type="hidden" class="" value="${row.id}" />
-                        <a class="bg-secondary btn btn-sm text-white cursor-pointer" href="/masterclass/formastercourseput?id=${row.id}" title="Edit"> <span class="fa fa-edit "></span>Edit </a>
-                          <a class="bg-danger btn btn-sm text-white cursor-pointer" onClick="onDelete(${row.id})" title="Remove"><span class="fa fa-trash "></span> Delete </a>`;
+                        <a class="bg-secondary btn btn-sm text-white cursor-pointer" href="/MasterCourse/EditMasterCourse?id=${row.id}" title="Edit"> <span class="fa fa-edit "></span>Edit </a>
+                          <a class="bg-danger btn btn-sm text-white cursor-pointer" onClick="onDelete('/MasterCourse/',${row.id})" title="Remove"><span class="fa fa-trash "></span> Delete </a>`;
                     }
                 },
             ]

@@ -60,14 +60,15 @@ function onPut(obj, passUrl) {
         return data;
 
     }).fail(function (data) {
-        alert('Error : (' + data.responseJSON.message + '). Please try later.');
+        alert('Error : (' + data.responseText + '). Please try later.');
     });
 
 }
-function onAuthPut(obj, passUrl) {
+
+function onAuthPut(obj, passUrl,id) {
     const formData = new FormData(obj)
     $.ajax({
-        url: apiUrl + passUrl,
+        url: apiUrl + passUrl+id,
         beforeSend: function (jqXHR) {
             jqXHR.setRequestHeader("Authorization", "Bearer " + access_token);
         },
@@ -81,21 +82,24 @@ function onAuthPut(obj, passUrl) {
         return data;
 
     }).fail(function (data) {
-        alert('Error : (' + data.responseJSON.message + '). Please try later.');
+        alert('Error : (' + data.responseText + '). Please try later.');
     });
 
 }
 
-function onDelete(passUrl) {
+function onDelete(passUrl,id) {
     $.ajax({
-        url: apiUrl + '/StatesApi/' + passUrl,
+        url: apiUrl + passUrl + id,
         method: 'DELETE',
+        beforeSend: function (jqXHR) {
+            jqXHR.setRequestHeader("Authorization", "Bearer " + access_token);
+        },
     }).done(function (data) {
-        alert("Success");
+        alert("Deleted!");
         return data;
 
     }).fail(function (data) {
-        alert('Error : (' + data.responseJSON.message + '). Please try later.');
+        alert('Error : (' + data.responseText + '). Please try later.');
     });
 
 }
@@ -125,11 +129,30 @@ function getCookie(cname) {
 }
 
 function checkCookie() {
-    let user = getCookie(`${$("#username").val()}_token`);
+    let user = getCookie(token);
     if (user != "") {
-        alert("Welcome again " + $("#username").val());
+        alert("Welcome");
     } else {
         alert("Invalid Token");
+    }
+}
+
+function alertFunction(type,msg) {
+    switch (type) {
+        case success: {
+            
+            break;
+        }
+        case danger: {
+
+            break;
+        } case warning: {
+
+            break;
+        }
+        default: {
+
+        }
     }
 }
 

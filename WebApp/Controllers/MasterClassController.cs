@@ -4,17 +4,17 @@ namespace WebApp.Controllers
 {
     public class MasterClassController : Controller
     {
-        public IActionResult ForMasterGet()
+        public IActionResult MasterClassList()
         {
             return View();
         }
 
-        public IActionResult ForMasterPost()
+        public IActionResult CreateMasterClass()
         {
             return View();
         }
 
-        public IActionResult ForMasterPut()
+        public IActionResult EditMasterClass()
         {
             return View();
         }

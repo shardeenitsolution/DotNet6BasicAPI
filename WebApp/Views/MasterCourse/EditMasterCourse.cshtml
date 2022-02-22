@@ -7,9 +7,9 @@
     <main b-7882z672yd="" role="main" class="p-4 shadow border border-3 rounded-3 bg-white">
 
         <div class="d-flex flex-column align-items-center">
-            <h1>Create Wihtout Using Model</h1>
+            <h3>Edit Course Wihtout Using Model</h3>
 
-            <h4>AddStateModel</h4>
+            @*<h4>AddStateModel</h4>*@
 
             <hr class="w-100">
         </div>
@@ -19,12 +19,12 @@
                 <form>            
                     <div class="form-group mb-3 d-none flex-column">
                         <label for="Id" class="control-label"> Id: </label>
-                        <input class="form-control shadow-sm" type="text" id="Id" name="Id">
+                        <input class="form-control shadow-sm" type="hidden" id="Id" name="Id">
                     </div>
                     
                     <div class="form-group mb-3 d-flex flex-column">
                         <label for="Name" class="control-label"> Name: </label>
-                        <input class="form-control shadow-sm" type="text" id="Name" name="name">
+                        <input class="form-control shadow-sm" type="text" id="name" name="name">
                     </div>
 
                     <div class="form-group mb-3 d-flex flex-column">
@@ -42,8 +42,12 @@
                         <input class="form-control shadow-sm" type="date" id="launchDate" name="launchDate">
                     </div>
 
-                    <div class="form-group d-flex justify-content-center">
+                  @*  <div class="form-group d-flex justify-content-center">
                         <input type="submit" id="SubmitBtn" value="Create" class="btn btn-primary px-3">
+                    </div>*@
+                    <div class="form-group my-5 ">
+                        <a class="btn btn-primary" asp-action="MasterClassList">Back to List</a>
+                        <input type="submit" value="Save" class="btn btn-success mx-4" />
                     </div>
                 </form>
             </div>
@@ -51,3 +55,27 @@
 
     </main>
 </div>
+
+
+@section Scripts {
+
+<script>
+       $(document).ready(function(){
+           const params = new Proxy(new URLSearchParams(window.location.search), {
+               get: (searchParams, prop) => searchParams.get(prop)});
+
+       var id = params.id; // "some_value"
+       $('#Id').val(id);
+       console.log(id);
+
+        $('form').on('submit',function(e){
+           e.preventDefault();
+          onAuthPut(this,"/MasterCourse/",id);
+       })
+    })
+
+</script>
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}
